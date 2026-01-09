@@ -1,4 +1,5 @@
 const upload = document.querySelector(".espaco");
+const imagem = upload.querySelector(".imagem");
 const arquivo_importado = document.querySelector("#arquivo_importado");
 const inputinvisivel = document.querySelector("#arquivo");
 upload.addEventListener("dragover", aoarrastarsobre);
@@ -31,6 +32,19 @@ function aoarrastarsobre(event) {
     event.preventDefault();
     console.log("O arquivo está pairando sobre a div");
 }
+
+upload.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    imagem.classList.add("dragging");
+});
+
+upload.addEventListener("dragleave", () => {
+    imagem.classList.remove("dragging");
+});
+
+upload.addEventListener("drop", () => {
+    imagem.classList.remove("dragging");
+});
 
 function aosoltar(event) {
     event.preventDefault();
