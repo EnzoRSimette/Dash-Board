@@ -11,8 +11,11 @@ function abrirseletor() {
 
 upload.addEventListener("click", abrirseletor);
 
-function processararquivo() {
-    const dados = inputinvisivel.files[0];
+function validarEExibir () {
+    if (!arquivo_importado.name.endsWith(".xlsx")) {
+        alert("Coloque apenas arquivos xlsx, por favor");
+        return;
+    }
     arquivo_importado.textContent = `${dados.name}`;
     if (dados) {
         console.log("Arquivo existe");
@@ -48,9 +51,9 @@ upload.addEventListener("drop", () => {
 
 function aosoltar(event) {
     event.preventDefault();
-    const arquivosSoltos = event.dataTransfer.files[0];
+    const arquivosSoltos = validarEExibir(event.dataTransfer.files[0]);
     arquivo_importado.textContent = `${arquivosSoltos.name}`;
     console.log("Você soltou o arquivo:", arquivosSoltos.name);
 }
 
-inputinvisivel.addEventListener("change", processararquivo);
+validarEExibir.addEventListener("change", processararquivo);
