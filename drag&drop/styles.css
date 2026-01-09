@@ -51,7 +51,7 @@ div h2 {
     opacity: 0.8;
 }
 
-div .espaco p {
+div .espaco #arquivo_importado {
     margin: -10px auto;              /* ISSO AQUI TÁ UMA CORNISSE MAS DEPOIS AJEITO, TÁ FUNCIONANDO */
     opacity: 30%;
     font-size: 15px;
