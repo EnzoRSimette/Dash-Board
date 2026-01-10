@@ -11,24 +11,35 @@ function abrirseletor() {
 
 upload.addEventListener("click", abrirseletor);
 
-function validarEExibir () {
-    if (!arquivo_importado.name.endsWith(".xlsx")) {
+function validarEExibir(file) {
+    // Accept either a passed file or the file from the hidden input
+    const arquivo = file || inputinvisivel.files[0];
+
+    if (!arquivo) {
+        console.log("Nenhum arquivo selecionado");
+        return null;
+    }
+
+    if (!arquivo.name || !arquivo.name.toLowerCase().endsWith(".xlsx")) {
         alert("Coloque apenas arquivos xlsx, por favor");
-        return;
+        return null;
     }
-    arquivo_importado.textContent = `${dados.name}`;
-    if (dados) {
-        console.log("Arquivo existe");
-    } else {
-        console.log("Arquivo não existe");
-    }
-    if (dados.size >= 524288000) {
+
+    // Show file name in the UI
+    arquivo_importado.textContent = arquivo.name;
+
+    console.log("Arquivo existe");
+
+    if (typeof arquivo.size === 'number' && arquivo.size >= 524288000) {
         alert("Arquivo é muito grande!");
         console.clear();
+        return null;
     } else {
         console.log("Arquivo aceito!");
     }
-    console.log(dados);
+
+    console.log(arquivo);
+    return arquivo;
 }
 
 function aoarrastarsobre(event) {
@@ -51,9 +62,18 @@ upload.addEventListener("drop", () => {
 
 function aosoltar(event) {
     event.preventDefault();
-    const arquivosSoltos = validarEExibir(event.dataTransfer.files[0]);
-    arquivo_importado.textContent = `${arquivosSoltos.name}`;
-    console.log("Você soltou o arquivo:", arquivosSoltos.name);
+    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+    const arquivosSoltos = validarEExibir(file);
+    if (arquivosSoltos) {
+        arquivo_importado.textContent = arquivosSoltos.name;
+        console.log("Você soltou o arquivo:", arquivosSoltos.name);
+    }
 }
 
-validarEExibir.addEventListener("change", processararquivo);
+inputinvisivel.addEventListener("change", (e) => {
+    const file = e.target && e.target.files && e.target.files[0];
+    const validated = validarEExibir(file);
+    if (validated) {
+        arquivo_importado.textContent = validated.name;
+    }
+});
