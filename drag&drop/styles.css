@@ -55,7 +55,7 @@ div h2 {
     opacity: 0.8;
 }
 
-div .espaco #input_arquivo {
+div .espaco #arquivo_importado1 {
     margin: -10px auto; /* ISSO AQUI TÁ UMA CORNISSE MAS DEPOIS AJEITO, TÁ FUNCIONANDO */
     opacity: 30%;
     font-size: 15px;
