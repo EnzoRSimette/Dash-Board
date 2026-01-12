@@ -13,7 +13,7 @@ function validarEExibir(event) {
     const arquivosupload = event.target.files[0];
     if (!arquivosupload.name.endsWith(".xlsx")) {
         alert("Coloque apenas arquivos xlsx, por favor");
-        return;
+        return null;
     }
     if (arquivosupload) {
         console.log("Arquivo existe");
@@ -23,6 +23,7 @@ function validarEExibir(event) {
     if (arquivosupload.size >= 5242880) {
         alert("Arquivo é muito grande!");
         console.clear();
+        return null;
     } else {
         console.log("Arquivo aceito!");
     }
