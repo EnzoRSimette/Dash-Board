@@ -41,7 +41,7 @@ div h2 {
 }
 
 .espaco .imagem {
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.360, 1);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     transform: rotate(0deg);
 }
 

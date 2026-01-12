@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Arraste um .xlsx</title>
-</head>
-<body>
-    <div class="fundo">
-        <h2>Arraste um documento aqui</h2>
-        <div class="espaco">
-            <input type="file" id="input_arquivo" style="display: none;" accept=".xlsx">
-            <img src="upload.png" class="imagem">
-            <p id="arquivo_importado1"><i>O documento só é aceito em .xlsx</i></p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <title>Arraste um .xlsx</title>
+    </head>
+    <body>
+        <div class="fundo">
+            <h2>Arraste um documento aqui</h2>
+            <div class="espaco">
+                <input
+                    type="file"
+                    id="input_arquivo"
+                    style="display: none"
+                    accept=".xlsx"
+                />
+                <img src="upload.png" class="imagem" />
+                <p id="arquivo_importado1">
+                    <i>O documento só é aceito em .xlsx</i>
+                </p>
+            </div>
         </div>
-    </div>
-    <script src="script.js"></script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>
