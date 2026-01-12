@@ -1,3 +1,4 @@
+// Nota adicional: Futuramente, com tempo, adicionar um loop for para cada arquivo uplodado, isso vai fazer resetar a cada arquivo e dai a pessoa não precisa resetar a página
 const upload = document.querySelector(".espaco");
 const imagem = upload.querySelector(".imagem");
 const input_arquivo = document.querySelector("#input_arquivo");
