@@ -9,53 +9,40 @@ function abrirseletor() {
     input_arquivo.click();
 }
 
-function validarEExibir(event) {
-    event.preventDefault();
-    const arquivosupload = event.target.files[0];
-    if (!arquivosupload.name.endsWith(".xlsx")) {
-        alert("Coloque apenas arquivos xlsx, por favor");
-        return null;
-    } else {
-        arquivo_importado1.textContent = `${arquivosupload.name}`;
-    }
-    if (arquivosupload) {
-        console.log("Arquivo existe");
-    } else {
-        console.log("Arquivo não existe");
-    }
-    if (arquivosupload.size >= 5242880) {
-        alert("Arquivo é muito grande!");
-        console.clear();
-        return null;
-    } else {
-        console.log("Arquivo aceito!");
-    }
-    console.log(arquivosupload);
+function extrairArquivo (event) {
+    return event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
 }
 
-function validarEExibir_dragndrop(event) {
-    event.preventDefault();
-    const arquivosSoltos = event.dataTransfer.files[0];
-    if (!arquivosSoltos.name.endsWith(".xlsx")) {
+function processarArquivo(file) {
+    if (!file.name.endsWith(".xlsx")) {
         alert("Coloque apenas arquivos xlsx, por favor");
         return null;
     } else {
-        arquivo_importado1.textContent = `${arquivosSoltos.name}`;
+        arquivo_importado1.textContent = `${file.name}`;
     }
-    if (arquivosSoltos) {
+    if (file) {
         console.log("Arquivo existe");
     } else {
         console.log("Arquivo não existe");
     }
-    if (arquivosSoltos.size >= 5242880) {
+    if (file.size >= 5242880) {
         alert("Arquivo é muito grande!");
         console.clear();
         return null;
     } else {
         console.log("Arquivo aceito!");
     }
-    console.log(arquivosSoltos);
-    console.log("Você soltou o arquivo:", arquivosSoltos.name);
+    console.log(file);
+    console.log("Você fez upload do arquivo:", file.name);
+}
+
+function handledrop(event) {
+    processarArquivo(extrairArquivo(event));
+}
+
+function handleinput(event) {
+    event.preventDefault();
+    processarArquivo(extrairArquivo(event));
 }
 
 function aoarrastarsobre(event) {
@@ -72,11 +59,12 @@ upload.addEventListener("dragleave", () => {
     imagem.classList.remove("dragging");
 });
 
-upload.addEventListener("drop", () => {
+upload.addEventListener("drop", (event) => {
+    event.preventDefault();
     imagem.classList.remove("dragging");
 });
 
 upload.addEventListener("click", abrirseletor);
-input_arquivo.addEventListener("change", validarEExibir);
+input_arquivo.addEventListener("change", handleinput);
 upload.addEventListener("dragover", aoarrastarsobre);
-upload.addEventListener("drop", validarEExibir_dragndrop);
+upload.addEventListener("drop", handledrop);
