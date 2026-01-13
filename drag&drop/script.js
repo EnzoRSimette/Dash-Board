@@ -20,11 +20,6 @@ function processarArquivo(file) {
     } else {
         arquivo_importado1.textContent = `${file.name}`;
     }
-    if (file) {
-        console.log("Arquivo existe");
-    } else {
-        console.log("Arquivo não existe");
-    }
     if (file.size >= 5242880) {
         alert("Arquivo é muito grande!");
         console.clear();
@@ -34,14 +29,14 @@ function processarArquivo(file) {
     }
     console.log(file);
     console.log("Você fez upload do arquivo:", file.name);
+    window.location.replace("/dashboard/dashboard.html")
 }
 
-function handledrop(event) {
+function handleDrop(event) {
     processarArquivo(extrairArquivo(event));
 }
 
-function handleinput(event) {
-    event.preventDefault();
+function handleInput(event) {
     processarArquivo(extrairArquivo(event));
 }
 
