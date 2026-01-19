@@ -14,8 +14,8 @@ function extrairArquivo (event) {
 }
 
 function processarArquivo(file) {
-    if (!file.name.endsWith(".xlsx")) {
-        alert("Coloque apenas arquivos xlsx, por favor");
+    if (!file.name.endsWith(".xlsx" || ".csv")) {
+        alert("Coloque apenas arquivos xlsx ou csv, por favor");
         return null;
     } else {
         arquivo_importado1.textContent = `${file.name}`;
