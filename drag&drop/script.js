@@ -14,8 +14,8 @@ function extrairArquivo (event) {
 }
 
 function processarArquivo(file) {
-    if (!file.name.endsWith(".xlsx" || ".csv")) {
-        alert("Coloque apenas arquivos xlsx ou csv, por favor");
+    if (!file.name.endsWith(".csv")) {
+        alert("Coloque apenas arquivos csv, por favor");
         return null;
     } else {
         arquivo_importado1.textContent = `${file.name}`;
@@ -29,7 +29,14 @@ function processarArquivo(file) {
     }
     console.log(file);
     console.log("Você fez upload do arquivo:", file.name);
-    window.location.replace("/dashboard/dashboard.html")
+    let envelope_para_php = new FormData();
+    envelope_para_php.append("arquivo", file);
+    fetch("./php/processador.php", {
+        method: "POST",
+        body: envelope_para_php,
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
 }
 
 function handleDrop(event) {
@@ -60,6 +67,6 @@ upload.addEventListener("drop", (event) => {
 });
 
 upload.addEventListener("click", abrirseletor);
-input_arquivo.addEventListener("change", handleinput);
+input_arquivo.addEventListener("change", handleInput);
 upload.addEventListener("dragover", aoarrastarsobre);
-upload.addEventListener("drop", handledrop);
+upload.addEventListener("drop", handleDrop);
