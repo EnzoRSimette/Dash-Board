@@ -9,8 +9,10 @@ function abrirseletor() {
     input_arquivo.click();
 }
 
-function extrairArquivo (event) {
-    return event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+function extrairArquivo(event) {
+    return event.dataTransfer
+        ? event.dataTransfer.files[0]
+        : event.target.files[0];
 }
 
 function processarArquivo(file) {
@@ -20,7 +22,7 @@ function processarArquivo(file) {
     } else {
         arquivo_importado1.textContent = `${file.name}`;
     }
-    if (file.size >= 5242880) {
+    if (file.size >= 104857600) {
         alert("Arquivo é muito grande!");
         console.clear();
         return null;
@@ -35,8 +37,13 @@ function processarArquivo(file) {
         method: "POST",
         body: envelope_para_php,
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => console.log(data))
+        // .then((data) => {
+        //     console.log("Dados", data);
+        //     //montarGrafico(data);
+        // })
+        //.then(window.location.replace("../dashboard/data.html"));
 }
 
 function handleDrop(event) {
