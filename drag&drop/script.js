@@ -37,7 +37,7 @@ function processarArquivo(file) {
         method: "POST",
         body: envelope_para_php,
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => console.log(data))
         // .then((data) => {
         //     console.log("Dados", data);

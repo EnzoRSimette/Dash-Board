@@ -19,9 +19,10 @@ $dados_finais = [
 ];
 while ($informacoes = fgetcsv($arquivo, null, ';')) {
     if ($informacoes !== false || null) {
-    if (is_string($indice_atual)) {
-    $indice_atual = mb_convert_encoding($indice_atual, "UTF-8");
-    };
+        foreach ($informacoes as $i) {
+            $informacoes[$i] = mb_convert_encoding($informacoes[$i], 'UTF-8');
+            $informacoes[$i] = str_replace($i, ',', '.');
+        };
         $dados_finais['codigo_orgao_superior'][] = $informacoes[0];
         $dados_finais['nome_orgao_superior'][] = $informacoes[1];
         $dados_finais['codigo_orgao'][] = $informacoes[2];
@@ -38,6 +39,9 @@ while ($informacoes = fgetcsv($arquivo, null, ';')) {
         $dados_finais['ano_exercicio'][] = $informacoes[13];
     }
 }
-str_replace(',', '.', $dados_finais);
-echo json_encode($dados_finais);
+$quantidades = [];
+foreach ($dados_finais as $i) {
+        $quantidades[] = array_count_values($i);
+}
+json_encode($dados_finais);
 fclose($arquivo);
