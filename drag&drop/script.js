@@ -40,9 +40,10 @@ function processarArquivo(file) {
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
-            JSON.stringify(data);
-            sessionStorage.setItem(data, json_string);
-        });
+            data = JSON.stringify(data);
+            sessionStorage.setItem("json_string", data);
+        })
+        .then(() => window.location.replace("../dashboard/dashboard.html"))
     // .then(fetch("../dashboard/dashboard.html", {
     //     method: "POST",
     //     body: data
