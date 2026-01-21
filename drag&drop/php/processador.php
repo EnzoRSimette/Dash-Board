@@ -4,6 +4,7 @@ $cabeçalho = mb_convert_encoding(fgetcsv($arquivo, null, ';'), 'UTF-8'); // cri
 // ↑ detecta automaticamente como cabeçalho e ignora na próxima execução (eu acho, bem, funcionou)
 function limpar_texto($input) { // função para converter para utf-8 e trocar , por . nos valores monetários
     $input = mb_convert_encoding($input, 'UTF-8');
+    $input = str_replace('.', "", $input);
     $input = str_replace(',','.', $input);
     return $input;
 };
@@ -46,7 +47,37 @@ while ($informacoes = fgetcsv($arquivo, null, ';')) { // informações = conteú
     }
 }
 
+$somas = [];
 
+// foreach ($dados_finais['nome_orgao_superior'] as $i => $value) {
+//     $nome = $dados_finais['nome_orgao_superior'][$value];
+//     $nome = trim($nome);
+// }
+
+// foreach ($dados_finais['valor_realizado'] as $i) {
+//     $raw = $dados_finais['valor_realizado'][$i];
+//     $valor = limpar_texto($raw);
+//     if ($valor != null || false || 0) {
+//         if (array_key_exists($nome, $somas)) {
+//             $somas[$nome] = 0;
+//         } else {
+//             $somas[$nome] += $valor;
+//         }
+//     } else $valor = 0;
+// }
+
+foreach ($dados_finais['nome_orgao_superior'] as $i => $nome) { // Acho que consegui
+    $nome = trim($dados_finais['nome_orgao_superior'][$i]);
+    $raw = $dados_finais['valor_realizado'][$i];
+    $valor = limpar_texto($raw);
+    if ($valor != null || false || 0) {
+        if (!isset($somas[$nome])) {
+            $somas[$nome] = 0;
+       } else {
+           $somas[$nome] += $valor;
+       }
+   } else $valor = 0;
+}
 
 $quantidades = [];
 foreach ($dados_finais as $i => $value) {  // Varre cada valor de cada nome dentro de $dados_finais e extrai o valor colocando em um objeto nome: quantidade
