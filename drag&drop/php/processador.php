@@ -54,5 +54,6 @@ foreach ($dados_finais as $i => $value) {  // Varre cada valor de cada nome dent
 }
 $quantidades[] = $dados_finais['valor_realizado'];
 $quantidades[] = $dados_finais['data_lancada'];
+$quantidades[] = array_count_values($dados_finais['data_lancada']);
 echo json_encode($quantidades); // Envia para o js
 fclose($arquivo);

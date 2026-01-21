@@ -37,13 +37,16 @@ function processarArquivo(file) {
         method: "POST",
         body: envelope_para_php,
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
-        // .then((data) => {
-        //     console.log("Dados", data);
-        //     //montarGrafico(data);
-        // })
-        //.then(window.location.replace("../dashboard/data.html"));
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            JSON.stringify(data);
+            sessionStorage.setItem(data, json_string);
+        });
+    // .then(fetch("../dashboard/dashboard.html", {
+    //     method: "POST",
+    //     body: data
+    // }))
 }
 
 function handleDrop(event) {
