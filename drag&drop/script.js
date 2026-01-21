@@ -42,9 +42,11 @@ function processarArquivo(file) {
             console.log(data);
             data = JSON.stringify(data);
             sessionStorage.setItem("json_string", data);
+            window.location.replace("../dashboard/dashboard.html");
+
         })
-        .then(() => window.location.replace("../dashboard/dashboard.html"))
-    // .then(fetch("../dashboard/dashboard.html", {
+        //.then(() => {window.location.replace("../dashboard/dashboard.html")})
+        //.then(fetch("../dashboard/dashboard.html", {
     //     method: "POST",
     //     body: data
     // }))

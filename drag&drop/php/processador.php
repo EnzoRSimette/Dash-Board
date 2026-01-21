@@ -45,14 +45,22 @@ while ($informacoes = fgetcsv($arquivo, null, ';')) { // informações = conteú
         $dados_finais['ano_exercicio'][] = limpar_texto($informacoes[15]);
     }
 }
+
+
+
 $quantidades = [];
 foreach ($dados_finais as $i => $value) {  // Varre cada valor de cada nome dentro de $dados_finais e extrai o valor colocando em um objeto nome: quantidade
     if ($i == 'valor_realizado') continue; // pula valor_realizado e data_lancada
     if ($i == 'data_lancada') continue;
     $contador = array_count_values($value);
-    $quantidades[] = $contador;
+    arsort($contador);
+    $contador_ordenado = [];
+    foreach ($contador as $key => $value) {
+        $contador_ordenado[] = ['chave' => $key, 'valor' => $value];
+    }
+    $quantidades[] = $contador_ordenado;
 }
-$quantidades[] = $dados_finais['valor_realizado'];
+//$quantidades[] = $dados_finais['valor_realizado'];
 $quantidades[] = $dados_finais['data_lancada'];
 $quantidades[] = array_count_values($dados_finais['data_lancada']);
 echo json_encode($quantidades); // Envia para o js
