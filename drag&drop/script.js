@@ -38,18 +38,6 @@ function processarArquivo(file) {
         body: envelope_para_php,
     })
         .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            data = JSON.stringify(data);
-            sessionStorage.setItem("json_string", data);
-            window.location.replace("../dashboard/dashboard.html");
-
-        })
-        //.then(() => {window.location.replace("../dashboard/dashboard.html")})
-        //.then(fetch("../dashboard/dashboard.html", {
-    //     method: "POST",
-    //     body: data
-    // }))
 }
 
 function handleDrop(event) {
