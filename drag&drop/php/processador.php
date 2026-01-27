@@ -11,12 +11,12 @@ $cols = "`CODIGO_ORGAO_SUPERIOR`, `NOME_ORGAO_SUPERIOR`, `CODIGO_ORGAO`, `NOME_O
 $sql_query = "LOAD DATA LOCAL INFILE '$caminho' IGNORE INTO TABLE `dados` CHARACTER SET utf8mb4 FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' ESCAPED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (@ColVar0, `NOME_ORGAO_SUPERIOR`, @ColVar2, `NOME_ORGAO`, @ColVar4, `NOME_UNIDADE_GESTORA`, `CATEGORIA_ECONOMICA`, `ORIGEM_RECEITA`, `ESPECIE_RECEITA`, `DETALHAMENTO`, @ColVar10, @ColVar11, @ColVar12, @ColVar13, `DATA_LANCAMENTO`, @ColVar15)
 SET
 `CODIGO_ORGAO_SUPERIOR` = REPLACE(REPLACE(@ColVar0, '.', ''), ',', '.'),
- `CODIGO_ORGAO` = REPLACE(REPLACE(@ColVar2, '.', ''), ',', '.'),
-  `CODIGO_UNIDADE_GESTORA` = REPLACE(REPLACE(@ColVar4, '.', ''), ',', '.'),
-   `VALOR_PREVISTO_ATUALIZADO` = REPLACE(REPLACE(@ColVar10, '.', ''), ',', '.'),
-    `VALOR_LANCADO` = REPLACE(REPLACE(@ColVar11, '.', ''), ',', '.'),
-    `VALOR_REALIZADO` = REPLACE(REPLACE(@ColVar12, '.', ''), ',', '.'),
-    `PERCENTUAL_REALIZADO` = REPLACE(REPLACE(@ColVar13, '.', ''), ',', '.'),
-    `ANO_EXERCICIO` = REPLACE(REPLACE(@ColVar15, '.', ''), ',', '.');";
+`CODIGO_ORGAO` = REPLACE(REPLACE(@ColVar2, '.', ''), ',', '.'),
+`CODIGO_UNIDADE_GESTORA` = REPLACE(REPLACE(@ColVar4, '.', ''), ',', '.'),
+`VALOR_PREVISTO_ATUALIZADO` = REPLACE(REPLACE(@ColVar10, '.', ''), ',', '.'),
+`VALOR_LANCADO` = REPLACE(REPLACE(@ColVar11, '.', ''), ',', '.'),
+`VALOR_REALIZADO` = REPLACE(REPLACE(@ColVar12, '.', ''), ',', '.'),
+`PERCENTUAL_REALIZADO` = REPLACE(REPLACE(@ColVar13, '.', ''), ',', '.'),
+`ANO_EXERCICIO` = REPLACE(REPLACE(@ColVar15, '.', ''), ',', '.');";
 
 try {$ligacao->query($sql_query)->fetchAll(); echo "Dados importados";} catch (Exception $ex) { echo $ex->getMessage(); }
