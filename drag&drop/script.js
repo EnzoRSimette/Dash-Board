@@ -37,7 +37,7 @@ function processarArquivo(file) {
         method: "POST",
         body: envelope_para_php,
     })
-        .then((response) => response.json())
+        .then((response) => response.text())
 }
 
 function handleDrop(event) {
