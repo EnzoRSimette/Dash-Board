@@ -20,12 +20,7 @@ $db = new Database(MYSQL_CONFIG);
 // = PATHS =
 // =========
 
-$caminho = $_FILES["arquivo"]["tmp_name"];
-$caminho = str_replace('\\', '/', $caminho);
-
-$cols = "`CODIGO_ORGAO_SUPERIOR`, `NOME_ORGAO_SUPERIOR`, `CODIGO_ORGAO`, `NOME_ORGAO`, `CODIGO_UNIDADE_GESTORA`, `NOME_UNIDADE_GESTORA`, `CATEGORIA_ECONOMICA`, `ORIGEM_RECEITA`,
-`ESPECIE_RECEITA`, `DETALHAMENTO`, `VALOR_PREVISTO_ATUALIZADO`, `VALOR_LANCADO`, `VALOR_REALIZADO`, `PERCENTUAL_REALIZADO`, `DATA_LANCAMENTO`, ANO_EXERCICIO";
-
+$caminho = str_replace('\\', '/', $_FILES["arquivo"]["tmp_name"]);
 
 //! ==============
 //! = SQL QUERYs =
@@ -41,8 +36,9 @@ SET
 `VALOR_LANCADO` = REPLACE(REPLACE(@ColVar11, '.', ''), ',', '.'),
 `VALOR_REALIZADO` = REPLACE(REPLACE(@ColVar12, '.', ''), ',', '.'),
 `PERCENTUAL_REALIZADO` = REPLACE(REPLACE(@ColVar13, '.', ''), ',', '.'),
-`ANO_EXERCICIO` = REPLACE(REPLACE(@ColVar15, '.', ''), ',', '.');";
-
+`ANO_EXERCICIO` = REPLACE(REPLACE(@ColVar15, '.', ''), ',', '.');
+";
+//`DATA_LANCAMENTO` = STR_TO_DATE(@ColVar14, '%d/%m/%Y'),
 $limpar_dados = "
 TRUNCATE TABLE `dados`
 ";
@@ -51,3 +47,17 @@ $db->execute_query($limpar_dados);
 echo 'Database is clear' . PHP_EOL;
 $db->execute_query($sql_query);
 echo 'Data imported';
+
+//? $$$$$$$$$$$$$$$$$
+//? $ DATA ANALYSIS $
+//? $$$$$$$$$$$$$$$$$
+
+$soma_valores_por_orgao_superior = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC LIMIT 5");
+$soma_valores_por_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC LIMIT 5");
+$orgao_s_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, COUNT(NOME_ORGAO_SUPERIOR) QUANTIDADE FROM dados GROUP BY NOS ORDER BY QUANTIDADE DESC LIMIT 1");
+$orgao_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO `NO`, COUNT(NOME_ORGAO) QUANTIDADE FROM dados GROUP BY `NO` ORDER BY QUANTIDADE DESC LIMIT 1");
+$media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS");
+$media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO`");
+$soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) FROM dados GROUP BY `OR`");
+$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
+$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");

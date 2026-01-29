@@ -38,7 +38,8 @@ function processarArquivo(file) {
         body: envelope_para_php,
     })
         .then((response) => response.text())
-        .then(() => window.location.replace("../dashboard/dashboard.html"));
+        .then(() => window.location.replace("../dashboard/dashboard.php"))
+        .catch((error) => {console.error(error)});
 }
 
 function handleDrop(event) {
