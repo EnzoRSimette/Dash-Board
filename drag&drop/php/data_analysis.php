@@ -1,0 +1,103 @@
+<?php
+
+//? $$$$$$$$$$$$$$$$$
+//? $ DATA ANALYSIS $
+//? $$$$$$$$$$$$$$$$$
+
+echo 'Processando análises...' . PHP_EOL;
+
+$soma_valores_por_orgao_superior = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC LIMIT 5");
+echo 'executada';
+$soma_valores_por_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC LIMIT 5");
+echo 'executada';
+$orgao_s_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, COUNT(NOME_ORGAO_SUPERIOR) QUANTIDADE FROM dados GROUP BY NOS ORDER BY QUANTIDADE DESC LIMIT 1");
+echo 'executada';
+$orgao_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO `NO`, COUNT(NOME_ORGAO) QUANTIDADE FROM dados GROUP BY `NO` ORDER BY QUANTIDADE DESC LIMIT 1");
+echo 'executada';
+$media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS");
+echo 'executada';
+$media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO`");
+echo 'executada';
+$soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL FROM dados GROUP BY `OR`");
+echo 'executada';
+$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
+echo 'executada';
+$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
+echo 'executada';
+$mediana_orgao_superior = $db->execute_query("
+WITH mediana AS (
+  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
+  FROM (
+    SELECT
+      VALOR_REALIZADO,
+      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,
+      COUNT(*) OVER () AS cnt
+    FROM dados
+  ) t
+  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))
+),
+org_total AS (
+  SELECT
+    NOME_ORGAO_SUPERIOR AS NOS,
+    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL
+  FROM dados
+  GROUP BY NOME_ORGAO_SUPERIOR
+)
+SELECT
+  o.NOS,
+  o.TOTAL,
+  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,
+  m.MEDIANA
+FROM org_total o
+CROSS JOIN mediana m
+ORDER BY o.TOTAL DESC;
+");
+echo 'executada';
+$mediana_orgao = $db->execute_query("
+WITH mediana AS (
+  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
+  FROM (
+    SELECT
+      VALOR_REALIZADO,
+      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,
+      COUNT(*) OVER () AS cnt
+    FROM dados
+  ) t
+  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))
+),
+org_total AS (
+  SELECT
+    NOME_ORGAO AS `NO`,
+    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL
+  FROM dados
+  GROUP BY `NO`
+)
+SELECT
+  o.`NO`,
+  o.TOTAL,
+  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,
+  m.MEDIANA
+FROM org_total o
+CROSS JOIN mediana m
+ORDER BY o.TOTAL DESC;
+");
+echo 'executada';
+$tipos_receita_nos = $db->execute_query("SELECT DISTINCT NOME_ORGAO_SUPERIOR NOS, ESPECIE_RECEITA FROM dados");
+echo 'executada';
+$tipos_receita_no = $db->execute_query("SELECT DISTINCT NOME_ORGAO, ESPECIE_RECEITA FROM dados");
+echo 'executada';
+$all_data = [
+    'soma_valores_nos' => $soma_valores_por_orgao_superior,
+    'soma_valores_no' => $soma_valores_por_orgao,
+    'nos_mais_receitas' => $orgao_s_com_mais_receitas,
+    'no_mais_receitas' => $orgao_com_mais_receitas,
+    'media_nos' => $media_orgao_s,
+    'media_no' => $media_orgao,
+    'soma_tipo_receita' => $soma_tipo_receita,
+    'porcentagem_nos' => $porcentagem_por_orgao_s,
+    'porcentagem_no' => $porcentagem_por_orgao,
+    'mediana_nos' => $mediana_orgao_superior,
+    'mediana_orgao' => $mediana_orgao,
+    'tipos_receita_nos' => $tipos_receita_nos,
+    'tipos_receitas_no' => $tipos_receita_no
+];
