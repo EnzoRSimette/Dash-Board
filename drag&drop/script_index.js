@@ -51,6 +51,7 @@ function processarArquivo(file) {
     // Preparar FormData
     let envelope_para_php = new FormData();
     envelope_para_php.append("arquivo", file);
+    const payload = { action: 'all_data' }
 
     // Mostrar indicador de carregamento (opcional - adicione no HTML se quiser)
     // document.body.style.cursor = 'wait';
@@ -60,6 +61,11 @@ function processarArquivo(file) {
         method: "POST",
         body: envelope_para_php,
     })
+    .then(() => {fetch('./php/data_analysis.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }})
     .then((response) => {
         console.log("Resposta recebida - Status:", response.status);
 
@@ -68,28 +74,28 @@ function processarArquivo(file) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }
 
-        return response.text();
+        return
     })
-    .then((data) => {
-        console.log("Resposta do servidor:", data);
+    // .then((data) => {
+    //     console.log("Resposta do servidor:", data);
 
-        // Verificar se houve sucesso no processamento
-        // O normalizador.php retorna "SUCCESS" quando dá certo
-        if (data.includes("SUCCESS") || data.includes("Data imported")) {
-            console.log("Upload e processamento concluídos com sucesso");
+    //     // Verificar se houve sucesso no processamento
+    //     // O normalizador.php retorna "SUCCESS" quando dá certo
+    //     if (data.includes("SUCCESS") || data.includes("Data imported")) {
+    //         console.log("Upload e processamento concluídos com sucesso");
 
-            // Redirecionar para o dashboard APENAS se deu certo
-            window.location.replace("../dashboard/dashboard.php");
-        } else if (data.includes("ERRO")) {
-            // Se houver erro explícito, mostrar ao usuário
-            console.error("Erro no servidor:", data);
-            alert("Erro ao processar arquivo. Verifique o console (F12) para mais detalhes.");
-        } else {
-            // Resposta inesperada
-            console.warn("Resposta inesperada do servidor:", data);
-            alert("Processamento concluído, mas a resposta foi inesperada. Verifique o console.");
-        }
-    })
+    //         // Redirecionar para o dashboard APENAS se deu certo
+    //         window.location.replace("../dashboard/dashboard.php");
+    //     } else if (data.includes("ERRO")) {
+    //         // Se houver erro explícito, mostrar ao usuário
+    //         console.error("Erro no servidor:", data);
+    //         alert("Erro ao processar arquivo. Verifique o console (F12) para mais detalhes.");
+    //     } else {
+    //         // Resposta inesperada
+    //         console.warn("Resposta inesperada do servidor:", data);
+    //         alert("Processamento concluído, mas a resposta foi inesperada. Verifique o console.");
+    //     }
+    // })
     .catch((error) => {
         console.error("Erro no upload:", error);
         alert("Erro ao enviar arquivo: " + error.message + "\n\nVerifique sua conexão e tente novamente.");

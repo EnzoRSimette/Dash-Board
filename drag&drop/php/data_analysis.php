@@ -1,29 +1,36 @@
 <?php
 
+//* $$$$$$$$$$$$$$$$$
+//* $ SQL CONECTION $
+//* $$$$$$$$$$$$$$$$$
+
+use sys4soft\Database;
+require_once('database.php');
+define('MYSQL_CONFIG', [
+    'host' => 'localhost',
+    'database' => 'dashboard',
+    'username' => 'root',
+    'password' => '',
+    'charset' => 'latin1'
+]);
+
+$db = new Database(MYSQL_CONFIG);
+
 //? $$$$$$$$$$$$$$$$$
 //? $ DATA ANALYSIS $
 //? $$$$$$$$$$$$$$$$$
 
-echo 'Processando análises...' . PHP_EOL;
+header('Content-Type: application/json; charset=utf-8');
 
 $soma_valores_por_orgao_superior = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC LIMIT 5");
-echo 'executada';
 $soma_valores_por_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC LIMIT 5");
-echo 'executada';
 $orgao_s_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, COUNT(NOME_ORGAO_SUPERIOR) QUANTIDADE FROM dados GROUP BY NOS ORDER BY QUANTIDADE DESC LIMIT 1");
-echo 'executada';
 $orgao_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO `NO`, COUNT(NOME_ORGAO) QUANTIDADE FROM dados GROUP BY `NO` ORDER BY QUANTIDADE DESC LIMIT 1");
-echo 'executada';
 $media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS");
-echo 'executada';
 $media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO`");
-echo 'executada';
 $soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL FROM dados GROUP BY `OR`");
-echo 'executada';
 $porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
-echo 'executada';
 $porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
-echo 'executada';
 $mediana_orgao_superior = $db->execute_query("
 WITH mediana AS (
   SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
@@ -52,7 +59,7 @@ FROM org_total o
 CROSS JOIN mediana m
 ORDER BY o.TOTAL DESC;
 ");
-echo 'executada';
+
 $mediana_orgao = $db->execute_query("
 WITH mediana AS (
   SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
@@ -81,11 +88,11 @@ FROM org_total o
 CROSS JOIN mediana m
 ORDER BY o.TOTAL DESC;
 ");
-echo 'executada';
+
 $tipos_receita_nos = $db->execute_query("SELECT DISTINCT NOME_ORGAO_SUPERIOR NOS, ESPECIE_RECEITA FROM dados");
-echo 'executada';
+
 $tipos_receita_no = $db->execute_query("SELECT DISTINCT NOME_ORGAO, ESPECIE_RECEITA FROM dados");
-echo 'executada';
+
 $all_data = [
     'soma_valores_nos' => $soma_valores_por_orgao_superior,
     'soma_valores_no' => $soma_valores_por_orgao,
@@ -101,3 +108,7 @@ $all_data = [
     'tipos_receita_nos' => $tipos_receita_nos,
     'tipos_receitas_no' => $tipos_receita_no
 ];
+
+define('all_data', $all_data);
+
+echo json_encode($all_data);
