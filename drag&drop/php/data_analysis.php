@@ -5,13 +5,14 @@
 //* $$$$$$$$$$$$$$$$$
 
 use sys4soft\Database;
+
 require_once('database.php');
 define('MYSQL_CONFIG', [
-    'host' => 'localhost',
-    'database' => 'dashboard',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'latin1'
+  'host' => 'localhost',
+  'database' => 'dashboard',
+  'username' => 'root',
+  'password' => '',
+  'charset' => 'latin1'
 ]);
 
 $db = new Database(MYSQL_CONFIG);
@@ -94,21 +95,48 @@ $tipos_receita_nos = $db->execute_query("SELECT DISTINCT NOME_ORGAO_SUPERIOR NOS
 $tipos_receita_no = $db->execute_query("SELECT DISTINCT NOME_ORGAO, ESPECIE_RECEITA FROM dados");
 
 $all_data = [
-    'soma_valores_nos' => $soma_valores_por_orgao_superior,
-    'soma_valores_no' => $soma_valores_por_orgao,
-    'nos_mais_receitas' => $orgao_s_com_mais_receitas,
-    'no_mais_receitas' => $orgao_com_mais_receitas,
-    'media_nos' => $media_orgao_s,
-    'media_no' => $media_orgao,
-    'soma_tipo_receita' => $soma_tipo_receita,
-    'porcentagem_nos' => $porcentagem_por_orgao_s,
-    'porcentagem_no' => $porcentagem_por_orgao,
-    'mediana_nos' => $mediana_orgao_superior,
-    'mediana_orgao' => $mediana_orgao,
-    'tipos_receita_nos' => $tipos_receita_nos,
-    'tipos_receitas_no' => $tipos_receita_no
+  'soma_valores_nos' => $soma_valores_por_orgao_superior,
+  'soma_valores_no' => $soma_valores_por_orgao,
+  'nos_mais_receitas' => $orgao_s_com_mais_receitas,
+  'no_mais_receitas' => $orgao_com_mais_receitas,
+  'media_nos' => $media_orgao_s,
+  'media_no' => $media_orgao,
+  'soma_tipo_receita' => $soma_tipo_receita,
+  'porcentagem_nos' => $porcentagem_por_orgao_s,
+  'porcentagem_no' => $porcentagem_por_orgao,
+  'mediana_nos' => $mediana_orgao_superior,
+  'mediana_orgao' => $mediana_orgao,
+  'tipos_receita_nos' => $tipos_receita_nos,
+  'tipos_receitas_no' => $tipos_receita_no
 ];
 
-define('all_data', $all_data);
+function converter_latin1($texto)
+{
+  if ($texto !== null) {
+    if (is_string($texto)) {
+      $texto_convertido = mb_convert_encoding($texto, 'UTF-8', 'ISO-8859-1'); // Se for texto, converte para latin1
+      return $texto_convertido;
+    } elseif (is_array($texto)) {
+      $array_convertido = array_map('converter_latin1', $texto); // Se for array, usa arraymap e executa em cada coisa
+      return $array_convertido;
+    } elseif (is_object($texto)) {
+      foreach ($texto as $prop => $valor) { // Se for objeto, varre ele em busca de valores
+        if (is_array($valor)) {
+          $texto->$prop = array_map('converter_latin1', $valor); // se for array DENTRO DELE, usa array_map
+        } elseif (is_object($valor)) {
+          $texto->$prop = converter_latin1($valor); // Se for outro objeto usa a função nele recursivamente
+        } else {
+          $texto->$prop = converter_latin1($valor); // Se for qualquer outra coisa, executa a função
+          // Eu sei que está duplicado, mas no final das contas é a mesma coisa
+        }
+      }
+      return $texto;
+    } elseif (is_numeric($texto)) {
+      return $texto;
+    }
+  }
+}
+
+converter_latin1($all_data);
 
 echo json_encode($all_data);
