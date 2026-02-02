@@ -53,23 +53,29 @@ function processarArquivo(file) {
     envelope_para_php.append("arquivo", file);
 
     // Mostrar indicador de carregamento
-    document.body.style.cursor = 'wait';
+    document.body.style.cursor = "wait";
 
     // Fazer upload
     fetch("./php/normalizador.php", {
         method: "POST",
         body: envelope_para_php,
     })
-    .then(() => fetch('./php/data_analysis.php', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    }))
-    .then((response) => response.json())
-    .then((dados) => console.log(dados))
-    .catch((error) => {
-        console.error("Erro no upload:", error);
-        alert("Erro ao enviar arquivo: " + error.message);
-    })
+        .then(() =>
+            fetch("./php/data_analysis.php", {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            }),
+        )
+        .then((response) => response.json())
+        .then((dados) => console.log(dados))
+        .then((dados) =>
+            window.dispatchEvent(new CustomEvent("dados", { detail: dados }))
+        ) // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
+        //.then(() => window.location.replace("../dashboard/dashboard.php"))
+        .catch((error) => {
+            console.error("Erro no upload:", error);
+            alert("Erro ao enviar arquivo: " + error.message);
+        });
 }
 
 function handleDrop(event) {

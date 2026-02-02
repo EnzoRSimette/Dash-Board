@@ -27,11 +27,11 @@ $soma_valores_por_orgao_superior = $db->execute_query("SELECT NOME_ORGAO_SUPERIO
 $soma_valores_por_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC LIMIT 5");
 $orgao_s_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, COUNT(NOME_ORGAO_SUPERIOR) QUANTIDADE FROM dados GROUP BY NOS ORDER BY QUANTIDADE DESC LIMIT 1");
 $orgao_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO `NO`, COUNT(NOME_ORGAO) QUANTIDADE FROM dados GROUP BY `NO` ORDER BY QUANTIDADE DESC LIMIT 1");
-$media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS");
-$media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO`");
-$soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL FROM dados GROUP BY `OR`");
-$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
-$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total;");
+$media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS ORDER BY MEDIA DESC LIMIT 5");
+$media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO` ORDER BY MEDIA DESC LIMIT 5");
+$soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL FROM dados GROUP BY `OR` ORDER BY TOTAL DESC");
+$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
+$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
 $mediana_orgao_superior = $db->execute_query("
 WITH mediana AS (
   SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
@@ -58,7 +58,7 @@ SELECT
   m.MEDIANA
 FROM org_total o
 CROSS JOIN mediana m
-ORDER BY o.TOTAL DESC;
+ORDER BY o.TOTAL DESC LIMIT 1;
 ");
 
 $mediana_orgao = $db->execute_query("
@@ -87,7 +87,7 @@ SELECT
   m.MEDIANA
 FROM org_total o
 CROSS JOIN mediana m
-ORDER BY o.TOTAL DESC;
+ORDER BY o.TOTAL DESC LIMIT 1;
 ");
 
 $tipos_receita_nos = $db->execute_query("SELECT DISTINCT NOME_ORGAO_SUPERIOR NOS, ESPECIE_RECEITA FROM dados");
