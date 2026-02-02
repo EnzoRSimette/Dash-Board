@@ -1,7 +1,3 @@
-import {Chart} from 'chart.js/auto';
-import {TreemapController, TreemapElement} from 'chartjs-chart-treemap';
-Chart.register(TreemapController, TreemapElement);
-
 //window.addEventListener("dados", (e) => {
     // vai detectar o objeto dados e pegar as propriedades dele como dados
     //let dados = e.detail;
@@ -6416,3 +6412,21 @@ let tipos_receitas_no_dados = tipos_receitas_no.map(item => item.ESPECIE_RECEITA
 //     }
 // })
 
+
+new Chart('grafico_porcentagem_nos', {
+    type: "treemap",
+    data: {
+        datasets: [{
+            tree: porcentagem_nos,
+            key: 'PORCENTAGEM',
+            groups: ['NOS'],
+            spacing: 1,
+            borderWidth: 2,
+            borderColor: 'white'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+})

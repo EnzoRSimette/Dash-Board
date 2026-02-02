@@ -18,7 +18,11 @@
             <div id="grafico_ma_outro" class="bg-white rounded-md shadow-md flex-1"></div>
         </div>
         <div class="grid-cols-2 gap-x-3 p-2 grid-flow-col flex h-143 grow">
-            <div id="grafico_porcentagem_nos" class="bg-white rounded-md shadow-md flex-1"></div>
+            <div id="grafico1" class="bg-white rounded-md shadow-md flex-1">
+                <!-- <canvas id="grafico_porcentagem_nos"> -->
+
+                </canvas>
+            </div>
             <div id="grafico2" class="bg-white rounded-md shadow-md flex-1"></div>
         </div>
     </div>
