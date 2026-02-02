@@ -67,10 +67,10 @@ function processarArquivo(file) {
             }),
         )
         .then((response) => response.json())
-        .then((dados) => console.log(dados))
-        .then((dados) =>
-            window.dispatchEvent(new CustomEvent("dados", { detail: dados }))
-        ) // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
+        .then((dados) => {
+            console.log(dados)
+            window.dispatchEvent(new CustomEvent("dados", { detail: dados })) // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
+        })
         //.then(() => window.location.replace("../dashboard/dashboard.php"))
         .catch((error) => {
             console.error("Erro no upload:", error);

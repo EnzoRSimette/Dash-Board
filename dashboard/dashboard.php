@@ -8,7 +8,7 @@
         <title>Dashboard</title>
     </head>
     <body>
-
+        <div class="bg-zinc-100 min-h-screen min-w-screen"></div> <!-- dark:bg-slate-800 -->
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="dashboard.js"></script>
