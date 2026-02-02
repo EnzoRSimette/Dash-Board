@@ -212,31 +212,26 @@
     "porcentagem_nos": {
         "status": "SUCESS",
         "message": "sucess",
-        "query": "WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;",
+        "query": "WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;",
         "results": [
             {
                 "NOS": "Ministério da Fazenda",
-                "TOTAL": 3392907445981.89,
                 "PORCENTAGEM": 0.9035500650830313
             },
             {
                 "NOS": "Ministério da Previdência Social",
-                "TOTAL": 211986645944.26,
                 "PORCENTAGEM": 0.05645321919007985
             },
             {
                 "NOS": "Ministério de Minas e Energia",
-                "TOTAL": 37274320131.98,
                 "PORCENTAGEM": 0.009926358121280754
             },
             {
                 "NOS": "Ministério do Trabalho e Emprego",
-                "TOTAL": 35427961165.26,
                 "PORCENTAGEM": 0.009434662491173843
             },
             {
                 "NOS": "Ministério da Ciência, Tecnologia e Inovaç",
-                "TOTAL": 16777394166.95,
                 "PORCENTAGEM": 0.0044679130901209545
             }
         ],
@@ -246,31 +241,26 @@
     "porcentagem_no": {
         "status": "SUCESS",
         "message": "sucess",
-        "query": "WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;",
+        "query": "WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;",
         "results": [
             {
                 "NO": "Ministério da Fazenda - Unidades com vínculo direto",
-                "TOTAL": 3390708386284.79,
                 "PORCENTAGEM": 0.9029644432928383
             },
             {
                 "NO": "Fundo do Regime Geral da Previdência Social",
-                "TOTAL": 207022347362.42,
                 "PORCENTAGEM": 0.05513119895282654
             },
             {
                 "NO": "Fundo de Amparo ao Trabalhador",
-                "TOTAL": 35000963503.66,
                 "PORCENTAGEM": 0.009320950646370564
             },
             {
                 "NO": "Agência Nacional do Petróleo, Gás Natural e Biocombustíveis",
-                "TOTAL": 32461835600.98,
                 "PORCENTAGEM": 0.00864476680751059
             },
             {
                 "NO": "Fundo Nacional de Desenvolvimento Científico e Tecnológico",
-                "TOTAL": 16181204772.49,
                 "PORCENTAGEM": 0.004309144548761455
             }
         ],
@@ -280,12 +270,9 @@
     "mediana_nos": {
         "status": "SUCESS",
         "message": "sucess",
-        "query": "\r\nWITH mediana AS (\r\n  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA\r\n  FROM (\r\n    SELECT\r\n      VALOR_REALIZADO,\r\n      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,\r\n      COUNT(*) OVER () AS cnt\r\n    FROM dados\r\n  ) t\r\n  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))\r\n),\r\norg_total AS (\r\n  SELECT\r\n    NOME_ORGAO_SUPERIOR AS NOS,\r\n    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL\r\n  FROM dados\r\n  GROUP BY NOME_ORGAO_SUPERIOR\r\n)\r\nSELECT\r\n  o.NOS,\r\n  o.TOTAL,\r\n  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,\r\n  m.MEDIANA\r\nFROM org_total o\r\nCROSS JOIN mediana m\r\nORDER BY o.TOTAL DESC LIMIT 1;\r\n",
+        "query": "\r\nWITH mediana AS (\r\n  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA\r\n  FROM (\r\n    SELECT\r\n      VALOR_REALIZADO,\r\n      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,\r\n      COUNT(*) OVER () AS cnt\r\n    FROM dados\r\n  ) t\r\n  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))\r\n),\r\norg_total AS (\r\n  SELECT\r\n    NOME_ORGAO_SUPERIOR AS NOS,\r\n    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL\r\n  FROM dados\r\n  GROUP BY NOME_ORGAO_SUPERIOR\r\n)\r\nSELECT\r\n  m.MEDIANA\r\nFROM org_total o\r\nCROSS JOIN mediana m\r\nORDER BY o.TOTAL DESC LIMIT 1;\r\n",
         "results": [
             {
-                "NOS": "Ministério da Fazenda",
-                "TOTAL": 3392907445981.89,
-                "PORCENTAGEM": 0.9035500650830313,
                 "MEDIANA": 3519.98
             }
         ],
@@ -295,12 +282,9 @@
     "mediana_orgao": {
         "status": "SUCESS",
         "message": "sucess",
-        "query": "\r\nWITH mediana AS (\r\n  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA\r\n  FROM (\r\n    SELECT\r\n      VALOR_REALIZADO,\r\n      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,\r\n      COUNT(*) OVER () AS cnt\r\n    FROM dados\r\n  ) t\r\n  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))\r\n),\r\norg_total AS (\r\n  SELECT\r\n    NOME_ORGAO AS `NO`,\r\n    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL\r\n  FROM dados\r\n  GROUP BY `NO`\r\n)\r\nSELECT\r\n  o.`NO`,\r\n  o.TOTAL,\r\n  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,\r\n  m.MEDIANA\r\nFROM org_total o\r\nCROSS JOIN mediana m\r\nORDER BY o.TOTAL DESC LIMIT 1;\r\n",
+        "query": "\r\nWITH mediana AS (\r\n  SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA\r\n  FROM (\r\n    SELECT\r\n      VALOR_REALIZADO,\r\n      ROW_NUMBER() OVER (ORDER BY VALOR_REALIZADO) AS rn,\r\n      COUNT(*) OVER () AS cnt\r\n    FROM dados\r\n  ) t\r\n  WHERE rn IN (FLOOR((cnt + 1) / 2), CEIL((cnt + 1) / 2))\r\n),\r\norg_total AS (\r\n  SELECT\r\n    NOME_ORGAO AS `NO`,\r\n    ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL\r\n  FROM dados\r\n  GROUP BY `NO`\r\n)\r\nSELECT\r\n  m.MEDIANA\r\nFROM org_total o\r\nCROSS JOIN mediana m\r\nORDER BY o.TOTAL DESC LIMIT 1;\r\n",
         "results": [
             {
-                "NO": "Ministério da Fazenda - Unidades com vínculo direto",
-                "TOTAL": 3390708386284.79,
-                "PORCENTAGEM": 0.9029644432928383,
                 "MEDIANA": 3519.98
             }
         ],
@@ -6339,5 +6323,86 @@
     }
 }
 
-let media_no = dados.media_no.results
-let media_nos = dados.media_nos.results
+let media_no = dados.media_no.results;
+let media_no_labels = media_no.map(item => item.NO);
+let media_no_dados = media_no.map(item => item.MEDIA);
+
+let media_nos = dados.media_nos.results;
+let media_nos_labels = media_nos.map(item => item.NOS);
+let media_nos_dados = media_nos.map(item => item.MEDIA);
+
+let mediana_nos = dados.mediana_nos.results;
+let mediana_nos_labels = mediana_nos.map(item => item.NOS);
+let mediana_nos_dados = mediana_nos.map(item => item.MEDIANA);
+
+let mediana_no = dados.mediana_orgao.results;
+let mediana_no_labels = mediana_no.map(item => item.NO);
+let mediana_no_dados = mediana_no.map(item => item.MEDIANA);
+
+let no_mais_receitas = dados.no_mais_receitas.results;
+let no_mais_receitas_labels = no_mais_receitas.map(item => item.NO);
+let no_mais_receitas_dados = no_mais_receitas.map(item => item.QUANTIDADE);
+
+let nos_mais_receitas = dados.nos_mais_receitas.results;
+let nos_mais_receitas_labels = nos_mais_receitas.map(item => item.NOS);
+let nos_mais_receitas_dados = nos_mais_receitas.map(item => item.QUANTIDADE);
+
+let porcentagem_no = dados.porcentagem_no.results;
+let porcentagem_no_labels = porcentagem_no.map(item => item.NO);
+let porcentagem_no_dados = porcentagem_no.map(item => item.PORCENTAGEM);
+
+let porcentagem_nos = dados.porcentagem_nos.results;
+let porcentagem_nos_labels = porcentagem_nos.map(item => item.NOS);
+let porcentagem_nos_dados = porcentagem_nos.map(item => item.PORCENTAGEM);
+
+let soma_tipo_receita = dados.soma_tipo_receita.results;
+let soma_tipo_receita_labels = soma_tipo_receita.map(item => item.OR);
+let soma_tipo_receita_dados = soma_tipo_receita.map(item => item.TOTAL);
+
+let soma_valores_no = dados.soma_valores_no.results;
+let soma_valores_no_labels = soma_valores_no.map(item => item.NO);
+let soma_valores_no_dados = soma_valores_no.map(item => item.TOTAL);
+
+let soma_valores_nos = dados.soma_valores_nos.results;
+let soma_valores_nos_labels = soma_valores_nos.map(item => item.NOS);
+let soma_valores_nos_dados = soma_valores_nos.map(item => item.TOTAL);
+
+let tipos_receita_nos = dados.tipos_receita_nos.results;
+let tipos_receita_nos_labels = tipos_receita_nos.map(item => item.NOME_ORGAO_SUPERIOR);
+let tipos_receita_nos_dados = tipos_receita_nos.map(item => item.ESPECIE_RECEITA);
+
+let tipos_receitas_no = dados.tipos_receitas_no.results;
+let tipos_receitas_no_labels = tipos_receitas_no.map(item => item.NOME_ORGAO);
+let tipos_receitas_no_dados = tipos_receitas_no.map(item => item.ESPECIE_RECEITA);
+
+// new Chart(grafico_media_no, {
+//     type: "pie",
+//     data: {
+//         labels: media_no_labels,
+//         datasets: [{
+//             data: media_no_dados,
+//             backgroundColor: [
+//                 '#8E3517', '#CF4000', '#F84C02', '#F8C41B', '#82AB2B'
+//             ]
+//         }]
+//     },
+//     options: {
+//         responsive: true,
+//         plugins: {
+//             legend: {position: 'right'},
+//             title: {display: true, text: 'Top 5 orgãos por valor total'},
+//             tooltip: {
+//                 callbacks: {
+//                     label: function(context) {
+//                         let label = context.label || '';
+//                         let value = context.parsed;
+//                         let total = context.dataset.data.reduce((a, b) => a + b, 0);
+//                         let percentage = ((value / total) * 100).toFixed(2);
+//                         return label + ': R$ ' + value.toLocaleString('pt-BR') +
+//                                ' (' + percentage + '%)';
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// })

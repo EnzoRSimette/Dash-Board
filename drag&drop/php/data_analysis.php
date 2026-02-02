@@ -30,8 +30,8 @@ $orgao_com_mais_receitas = $db->execute_query("SELECT NOME_ORGAO `NO`, COUNT(NOM
 $media_orgao_s = $db->execute_query("SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY NOS ORDER BY MEDIA DESC LIMIT 5");
 $media_orgao = $db->execute_query("SELECT NOME_ORGAO `NO`, ROUND(AVG(VALOR_REALIZADO), 2) MEDIA FROM dados GROUP BY `NO` ORDER BY MEDIA DESC LIMIT 5");
 $soma_tipo_receita = $db->execute_query("SELECT ORIGEM_RECEITA `OR`, ROUND(SUM(VALOR_REALIZADO), 2) AS TOTAL FROM dados GROUP BY `OR` ORDER BY TOTAL DESC");
-$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
-$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
+$porcentagem_por_orgao_s = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO_SUPERIOR NOS, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY NOS ORDER BY TOTAL DESC) SELECT NOS, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
+$porcentagem_por_orgao = $db->execute_query("WITH org_total AS (SELECT NOME_ORGAO `NO`, ROUND(SUM(VALOR_REALIZADO), 2) TOTAL FROM dados GROUP BY `NO` ORDER BY TOTAL DESC) SELECT `NO`, TOTAL/SUM(TOTAL) OVER () AS PORCENTAGEM FROM org_total LIMIT 5;");
 $mediana_orgao_superior = $db->execute_query("
 WITH mediana AS (
   SELECT ROUND(AVG(VALOR_REALIZADO), 2) AS MEDIANA
@@ -52,9 +52,6 @@ org_total AS (
   GROUP BY NOME_ORGAO_SUPERIOR
 )
 SELECT
-  o.NOS,
-  o.TOTAL,
-  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,
   m.MEDIANA
 FROM org_total o
 CROSS JOIN mediana m
@@ -81,9 +78,6 @@ org_total AS (
   GROUP BY `NO`
 )
 SELECT
-  o.`NO`,
-  o.TOTAL,
-  o.TOTAL / SUM(o.TOTAL) OVER () AS PORCENTAGEM,
   m.MEDIANA
 FROM org_total o
 CROSS JOIN mediana m
