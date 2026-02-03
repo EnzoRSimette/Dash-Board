@@ -20,10 +20,10 @@
         </div>
 
         <div class="flex gap-3 p-2 h-143">
-            <div id="grafico1" class="bg-white rounded-md shadow-md flex-1 p-4">
+            <div class="bg-white rounded-md shadow-md flex-1 p-4">
                 <canvas id="grafico_porcentagem_nos"></canvas>
             </div>
-            <div id="grafico" class="bg-white rounded-md shadow-md flex-1 p-4">
+            <div class="bg-white rounded-md shadow-md flex-1 p-4">
                 <canvas id="grafico_media_nos"></canvas>
             </div>
         </div>

@@ -104,11 +104,15 @@ $all_data = [
   'tipos_receitas_no' => $tipos_receita_no
 ];
 
+//todo ====================
+//todo = CONVERT FOR JSON =
+//todo ====================
+
 function converter_latin1($texto)
 {
   if ($texto !== null) {
     if (is_string($texto)) {
-      $texto_convertido = mb_convert_encoding($texto, 'UTF-8', 'ISO-8859-1'); // Se for texto, converte para latin1
+      $texto_convertido = mb_convert_encoding($texto, 'UTF-8', 'ISO-8859-1'); // Se for texto, converte para UTF-8
       return $texto_convertido;
     } elseif (is_array($texto)) {
       $array_convertido = array_map('converter_latin1', $texto); // Se for array, usa arraymap e executa em cada coisa

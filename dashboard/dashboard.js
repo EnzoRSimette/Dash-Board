@@ -9573,7 +9573,7 @@ let no_mais_receitas_labels = no_mais_receitas.map(item => item.NO);
 let no_mais_receitas_dados = no_mais_receitas.map(item => item.QUANTIDADE);
 
 let nos_mais_receitas = dados.nos_mais_receitas.results;
-let nos_mais_receitas_labels = nos_mais_receitas.map(item => item.NOS); //? Fazer agora como métrica
+let nos_mais_receitas_labels = nos_mais_receitas.map(item => item.NOS); //? Fazer como métrica
 let nos_mais_receitas_dados = nos_mais_receitas.map(item => item.QUANTIDADE);
 
 let porcentagem_no = dados.porcentagem_no.results;
