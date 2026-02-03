@@ -6420,13 +6420,63 @@ new Chart('grafico_porcentagem_nos', {
             tree: porcentagem_nos,
             key: 'PORCENTAGEM',
             groups: ['NOS'],
-            spacing: 1,
+            spacing: 0,
             borderWidth: 2,
-            borderColor: 'white'
+            borderColor: 'black',
+            backgroundColor: (ctx) => {
+                const cores = [
+                    '#8E3517', '#CF4000', '#F84C02', '#F8C41B', '#82AB2B'
+                ];
+                return cores[ctx.dataIndex % cores.length];
+            },
+            labels: {
+                display: true,
+                formatter: (ctx) => {
+                    // ctx.raw.v contém o valor
+                    const valor = ctx.raw.v;
+                    const porcentagem = (valor * 100).toFixed(2);
+                    if (ctx.dataIndex === 0) {
+                        const nome = ctx.raw._data.NOS;
+                        return [porcentagem + '%', nome];
+                    }
+                    return porcentagem + '%';
+                },
+                color: 'white',
+                font: {
+                    family: 'serif',
+                    size: 72,
+                    weight: 'bold'
+                },
+                overflow: 'fit'  // Adapta o tamanho
+            }
         }]
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Participação dos 5 maiores orgãos superiores',
+                font: {
+                    size: 40
+                }
+            },
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    title: (items) => {
+                        return items[0].raw._data.NOS;
+                    },
+                    label: (item) => {
+                        const valor = item.raw.v;
+                        const porcentagem = (valor*100).toFixed(2);
+                        return 'Participação: ' + porcentagem + '%';
+                    }
+                }
+            }
+        }
     }
-})
+});
