@@ -9561,7 +9561,7 @@ let media_nos_labels = media_nos.map(item => item.NOS); //! JÁ FEITO
 let media_nos_dados = media_nos.map(item => item.MEDIA);
 
 let mediana_nos = dados.mediana_nos.results;
-let mediana_nos_labels = mediana_nos.map(item => item.NOS); //! não conta como gráfico
+let mediana_nos_labels = mediana_nos.map(item => item.NOS); //? Fazer como métrica
 let mediana_nos_dados = mediana_nos.map(item => item.MEDIANA);
 
 let mediana_no = dados.mediana_orgao.results;
@@ -9573,7 +9573,7 @@ let no_mais_receitas_labels = no_mais_receitas.map(item => item.NO);
 let no_mais_receitas_dados = no_mais_receitas.map(item => item.QUANTIDADE);
 
 let nos_mais_receitas = dados.nos_mais_receitas.results;
-let nos_mais_receitas_labels = nos_mais_receitas.map(item => item.NOS); //? Fazer agora
+let nos_mais_receitas_labels = nos_mais_receitas.map(item => item.NOS); //? Fazer agora como métrica
 let nos_mais_receitas_dados = nos_mais_receitas.map(item => item.QUANTIDADE);
 
 let porcentagem_no = dados.porcentagem_no.results;
