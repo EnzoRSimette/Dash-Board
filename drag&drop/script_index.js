@@ -54,31 +54,36 @@ function processarArquivo(file) {
 
     // Mostrar indicador de carregamento
     document.body.style.cursor = "wait";
-
+    console.log("Arquivo a ser enviado:", file);
+    console.log("FormData criado");
     // Fazer upload
     fetch("./php/normalizador.php", {
         method: "POST",
         body: envelope_para_php,
     })
-        .then(() =>
-            fetch("./php/data_analysis.php", {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }),
-        )
-        .then((response) => response.json())
-        .then((dados) => {
-            console.log(dados);
-            window.dispatchEvent(new CustomEvent("dados", { detail: dados })); // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
-        })
-        .then(() => window.location.replace("../dashboard/dashboard.php"))
-        .catch((error) => {
-            console.error("Erro no upload:", error);
-            alert("Erro ao enviar arquivo: " + error.message);
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        return fetch("./php/data_analysis.php", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
         });
+    })
+    .then((response) => response.json())
+    .then((dados) => {
+        console.log(dados);
+        sessionStorage.setItem('dados', JSON.stringify(dados)) // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
+    })
+    .then(() => window.location.replace("../dashboard/dashboard.php"))
+    .catch((error) => {
+        console.error("Erro no upload:", error);
+        alert("Erro ao enviar arquivo: " + error.message);
+    });
 }
 
 function handleDrop(event) {
+    event.preventDefault();
     processarArquivo(extrairArquivo(event));
 }
 
@@ -103,9 +108,9 @@ espaco_maior.addEventListener("dragleave", () => {
 espaco_maior.addEventListener("drop", (event) => {
     event.preventDefault();
     imagem.classList.remove("dragging");
+    handleDrop(event);
 });
 
 espaco.addEventListener("click", abrirseletor);
 input_arquivo.addEventListener("change", handleInput);
-espaco_maior.addEventListener("dragover", aoarrastarsobre);
-espaco_maior.addEventListener("drop", handleDrop);
+
