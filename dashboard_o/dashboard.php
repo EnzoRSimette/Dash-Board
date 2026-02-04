@@ -14,32 +14,34 @@
 
 <body>
     <div class="bg-zinc-100 min-h-screen min-w-screen">
-        <div id="links" class="min-w-screen bg-white h-10 border-b-2 border-sky-300"></div>
+        <div id="links" class="min-w-screen bg-white h-10 border-b-2 border-sky-300">
+            <div class="p-2"><a href="../dashboard_os/dashboard.php" class="bg-cyan-300 px-[8px] py-1 rounded-xl font-serif hover:shadow-[inset_0_0_20px_rgba(34,211,238,1)] focus:outline-2 focus:outline-offset-1 focus:outline-cyan-500 active:bg-cyan-600">Dashboard para os Orgãos Inferiores</a></div>
+        </div>
 
         <div class="flex gap-3 p-2 h-75">
-            <div id="mediana_nos" class="bg-white rounded-md shadow-md flex-1 p-4">
-                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px]">Mediana dos Orgãos Superiores</p>
-                <p id="mediana_nos_paragrafo" class="justify-self-center text-8xl mt-[30px] text-ellipsis text-nowrap"></p>
+            <div id="mediana_no" class="bg-white rounded-md shadow-md flex-1 p-4">
+                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px]">Mediana dos Orgãos Inferiores</p>
+                <p id="mediana_no_paragrafo" class="justify-self-center text-8xl mt-[30px] text-ellipsis text-nowrap"></p>
             </div>
-            <div id="nos_mais_receitas" class="bg-white rounded-md shadow-md flex-1 p-4">
-                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px] text-nowrap">Orgão superior com mais receitas</p>
-                <p id="nos_mais_receitas_nome" class="justify-self-center text-5xl mt-[45px] text-ellipsis text-nowrap font-bold"></p>
-                <p id="nos_mais_receitas_valor" class="justify-self-center text-4xl mt-[10px] text-ellipsis text-nowrap"></p>
+            <div id="no_mais_receitas" class="bg-white rounded-md shadow-md flex-1 p-4">
+                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px] text-nowrap">Orgão Inferior com mais receitas</p>
+                <p id="no_mais_receitas_nome" class="justify-self-center text-5xl mt-[45px] font-bold"></p>
+                <p id="no_mais_receitas_valor" class="justify-self-center text-4xl mt-[10px] text-ellipsis text-nowrap"></p>
             </div>
-            <div id="soma_valores_nos" class="bg-white rounded-md shadow-md flex-1 p-4">
+            <div id="soma_valores_no" class="bg-white rounded-md shadow-md flex-1 p-4">
                 <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[5px] text-nowrap">Receita bruta</p>
-                <table id="tabela_soma_valores_nos" class="w-full rounded-xl overflow-hidden">
-                <thead id="tabela_soma_valores_nos_head" class="bg-gray-100 sticky top-0 collapse">
+                <table id="tabela_soma_valores_no" class="w-full rounded-xl overflow-hidden">
+                <thead id="tabela_soma_valores_no_head" class="bg-gray-100 sticky top-0 collapse">
                     <tr>
-                        <th id="nome_tabela_nos" class="px-4 py-2 text-left border-b-2 border-gray-300">
+                        <th id="nome_tabela_no" class="px-4 py-2 text-left border-b-2 border-gray-300">
                             Nome
                         </th>
-                        <th id="valor_tabela_nos" class="px-4 py-2 text-left border-b-2 border-gray-300">
+                        <th id="valor_tabela_no" class="px-4 py-2 text-left border-b-2 border-gray-300">
                             Valor acumulado
                         </th>
                     </tr>
                 </thead>
-                <tbody id="tabela_soma_valores_nos_body">
+                <tbody id="tabela_soma_valores_no_body">
                 </tbody>
                 </table>
             </div>
@@ -47,10 +49,10 @@
 
         <div class="flex gap-3 p-2 h-143">
             <div class="bg-white rounded-md shadow-md flex-1 p-4">
-                <canvas id="grafico_porcentagem_nos"></canvas>
+                <canvas id="grafico_porcentagem_no"></canvas>
             </div>
             <div class="bg-white rounded-md shadow-md flex-1 p-4">
-                <canvas id="grafico_media_nos"></canvas>
+                <canvas id="grafico_media_no"></canvas>
             </div>
         </div>
     </div>

@@ -39,7 +39,7 @@ let porcentagem_nos_labels = porcentagem_nos.map((item) => item.NOS); //! JÁ FE
 let porcentagem_nos_dados = porcentagem_nos.map((item) => item.PORCENTAGEM);
 
 let soma_tipo_receita = dados.soma_tipo_receita.results;
-let soma_tipo_receita_labels = soma_tipo_receita.map((item) => item.OR);
+let soma_tipo_receita_labels = soma_tipo_receita.map((item) => item.OR); //* tabela separada
 let soma_tipo_receita_dados = soma_tipo_receita.map((item) => item.TOTAL);
 
 let soma_valores_no = dados.soma_valores_no.results;
@@ -64,36 +64,40 @@ let tipos_receitas_no_dados = tipos_receitas_no.map(
     (item) => item.ESPECIE_RECEITA,
 );
 
-console.log(soma_valores_nos);
+console.log(soma_valores_no);
 
 window.onload = function () {
-    this.document.getElementById("mediana_nos_paragrafo").innerHTML =
-        "R$ " + mediana_nos_dados.toLocaleString("pt-BR");
-    this.document.getElementById("nos_mais_receitas_nome").innerHTML =
-        nos_mais_receitas_labels;
-    this.document.getElementById("nos_mais_receitas_valor").innerHTML =
-        `${nos_mais_receitas_dados.toLocaleString("pt-BR")} Receitas`;
+    this.document.getElementById("mediana_no_paragrafo").innerHTML =
+        "R$ " + mediana_no_dados.toLocaleString("pt-BR");
+    let nome = no_mais_receitas_labels[0];
+    if (nome.length > 25) {
+        nome = nome.slice(0, 25) + '...'
+    }
+    this.document.getElementById("no_mais_receitas_nome").innerHTML =
+        nome;
+    this.document.getElementById("no_mais_receitas_valor").innerHTML =
+        `${no_mais_receitas_dados.toLocaleString("pt-BR")} Receitas`;
 };
 
-new Chart("grafico_porcentagem_nos", {
+new Chart("grafico_porcentagem_no", {
     type: "treemap",
     data: {
         datasets: [
             {
-                tree: porcentagem_nos,
+                tree: porcentagem_no,
                 key: "PORCENTAGEM",
-                groups: ["NOS"],
+                groups: ["NO"],
                 spacing: 0,
                 borderWidth: 1,
                 borderColor: "black",
                 backgroundColor: (ctx) => {
-                    const cores = [
-                        "#8E3517",
-                        "#cf4200",
-                        "#F84C02",
-                        "#F8C41B",
-                        "#82AB2B",
-                    ];
+                const cores = [
+                    "#264653", // azul petróleo
+                    "#2A9D8F", // verde água
+                    "#E9C46A", // amarelo suave
+                    "#F4A261", // laranja médio
+                    "#E76F51", // coral
+                ];
                     return cores[ctx.dataIndex % cores.length];
                 },
                 labels: {
@@ -103,8 +107,11 @@ new Chart("grafico_porcentagem_nos", {
                         const valor = ctx.raw.v;
                         const porcentagem = (valor * 100).toFixed(2);
                         if (ctx.dataIndex === 0) {
-                            const nome = ctx.raw._data.NOS;
-                            return [porcentagem + "%", nome];
+                            let nome = ctx.raw._data.NO;
+                            if (nome.length > 25) {
+                                nome = nome.slice(0, 25) + '...'
+                            }
+                            return [porcentagem + "%", nome]; //25 caracteres que precisa tirar
                         }
                         return porcentagem + "%";
                     },
@@ -125,7 +132,7 @@ new Chart("grafico_porcentagem_nos", {
         plugins: {
             title: {
                 display: true,
-                text: "Porcentagem de participação de cada orgão superior",
+                text: "Porcentagem de participação de cada orgão inferior",
                 font: {
                     size: 35,
                 },
@@ -136,7 +143,7 @@ new Chart("grafico_porcentagem_nos", {
             tooltip: {
                 callbacks: {
                     title: (items) => {
-                        return items[0].raw._data.NOS;
+                        return items[0].raw._data.NO;
                     },
                     label: (item) => {
                         const valor = item.raw.v;
@@ -149,27 +156,27 @@ new Chart("grafico_porcentagem_nos", {
     },
 });
 
-new Chart("grafico_media_nos", {
+new Chart("grafico_media_no", {
     type: "bar",
     data: {
-        labels: media_nos_labels,
+        labels: media_no_labels,
         datasets: [
             {
                 label: "Média (R$)",
-                data: media_nos_dados,
+                data: media_no_dados,
                 backgroundColor: [
-                    "rgba(80, 173, 159, 0.5)",
-                    "rgba(233, 199, 22, 0.5)",
-                    "rgba(188, 39, 45, 0.5)",
-                    "rgba(0, 0, 162, 0.5)",
-                    "rgba(255, 90, 94, 0.5)",
+                    "rgba(54, 162, 235, 0.5)",   // azul
+                    "rgba(75, 192, 192, 0.5)",   // teal
+                    "rgba(255, 159, 64, 0.5)",   // laranja
+                    "rgba(153, 102, 255, 0.5)",  // roxo
+                    "rgba(75, 196, 115, 0.5)",  // cinza
                 ],
                 borderColor: [
-                    "rgba(80, 173, 159, 1)",
-                    "rgba(233, 199, 22, 1)",
-                    "rgba(188, 39, 45, 1)",
-                    "rgba(0, 0, 162, 1)",
-                    "rgba(255, 90, 94, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(255, 159, 64, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgb(75, 196, 115)",
                 ],
                 borderWidth: 2,
             },
@@ -181,7 +188,7 @@ new Chart("grafico_media_nos", {
         plugins: {
             title: {
                 display: true,
-                text: "Média de valores das receitas nos órgãos superiores (Top 15)",
+                text: "Média de valores das receitas no órgãos inferiores (Top 15)",
                 font: {
                     size: 18,
                 },
@@ -219,20 +226,20 @@ new Chart("grafico_media_nos", {
     },
 });
 
-soma_valores_nos.forEach((element) => {
-    this.document.querySelector("#tabela_soma_valores_nos_body").innerHTML +=
+soma_valores_no.forEach((element) => {
+    this.document.querySelector("#tabela_soma_valores_no_body").innerHTML +=
         `<tr'>
-    <td class="px-4 py-2 border-b border-gray-200">${element["NOS"]}</td>
+    <td class="px-4 py-2 border-b border-gray-200">${element["NO"]}</td>
     <td class="px-4 py-2 border-b border-gray-200">${element["TOTAL"].toLocaleString("pt-BR")}<td>
     </tr>
     `;
 });
 
-new DataTable("#tabela_soma_valores_nos", {
+new DataTable("#tabela_soma_valores_no", {
     paging: false,
     scrollCollapse: true,
     searching: false,
     scrollY: "185px",
     scrollX: false,
-    order: ["valor_tabela_nos", "desc"],
+    order: ["valor_tabela_no", "desc"],
 });

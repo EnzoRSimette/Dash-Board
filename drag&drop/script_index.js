@@ -75,7 +75,7 @@ function processarArquivo(file) {
         console.log(dados);
         sessionStorage.setItem('dados', JSON.stringify(dados)) // Vai despachar os dados para dashboard.js como um objeto com a propriedade detail sendo os dados
     })
-    .then(() => window.location.replace("../dashboard/dashboard.php"))
+    .then(() => window.location.replace("../dashboard_os/dashboard.php"))
     .catch((error) => {
         console.error("Erro no upload:", error);
         alert("Erro ao enviar arquivo: " + error.message);
