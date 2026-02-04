@@ -9551,7 +9551,6 @@
 //! Dados mais importantes (5)
 //! => Média no e nos, porcentagem no e nos, soma valores no e nos
 
-
 let media_no = dados.media_no.results;
 let media_no_labels = media_no.map(item => item.NO);
 let media_no_dados = media_no.map(item => item.MEDIA);
@@ -9564,9 +9563,9 @@ let mediana_nos = dados.mediana_nos.results;
 let mediana_nos_labels = mediana_nos.map(item => item.NOS); //? Fazer como métrica
 let mediana_nos_dados = mediana_nos.map(item => item.MEDIANA);
 
-let mediana_no = dados.mediana_orgao.results;
+let mediana_no = dados.mediana_orgao.results; //& Não fazer agora
 let mediana_no_labels = mediana_no.map(item => item.NO); //! não conta como gráfico
-let mediana_no_dados = mediana_no.map(item => item.MEDIANA);
+let mediana_no_dados = mediana_no.map(item => item.MEDIANA); //? Fazer como métrica
 
 let no_mais_receitas = dados.no_mais_receitas.results;
 let no_mais_receitas_labels = no_mais_receitas.map(item => item.NO);
@@ -9635,6 +9634,18 @@ let tipos_receitas_no_dados = tipos_receitas_no.map(item => item.ESPECIE_RECEITA
 //         }
 //     }
 // })
+
+console.log(nos_mais_receitas);
+
+let nos_mais_receitas_nome = nos_mais_receitas[0]['NOS'];
+let nos_mais_receitas_total = nos_mais_receitas[0]['QUANTIDADE'];
+
+let mediana_nos_dados_string = mediana_nos_dados[0].toString();
+window.onload = function () {
+    this.document.getElementById('mediana_nos_paragrafo').innerHTML = 'R$ ' + mediana_nos_dados_string.replaceAll(".", ",");
+    this.document.getElementById('nos_mais_receitas_nome').innerHTML = nos_mais_receitas_nome;
+    this.document.getElementById('nos_mais_receitas_valor').innerHTML = nos_mais_receitas_total;
+}
 
 
 new Chart('grafico_porcentagem_nos', {

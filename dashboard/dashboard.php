@@ -14,9 +14,16 @@
         <div id="links" class="min-w-screen bg-white h-10 border-b-2 border-sky-300"></div>
 
         <div class="flex gap-3 p-2 h-75">
-            <div id="grafico_media_no" class="bg-white rounded-md shadow-md flex-1 p-4"></div>
-            <div id="grafico_mdia_nos" class="bg-white rounded-md shadow-md flex-1 p-4"></div>
-            <div id="grafico_ma_outro" class="bg-white rounded-md shadow-md flex-1 p-4"></div>
+            <div id="mediana_nos" class="bg-white rounded-md shadow-md flex-1 p-4">
+                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px]">Mediana nos Orgãos Superiores</p>
+                <p id="mediana_nos_paragrafo" class="justify-self-center text-8xl mt-[30px] text-ellipsis text-nowrap"></p>
+            </div>
+            <div id="nos_mais_receitas" class="bg-white rounded-md shadow-md flex-1 p-4">
+                <p class="justify-self-center text-4xl font-mono text-[#666666] mt-[20px]">Orgão superior com Mais receitas</p>
+                <p id="nos_mais_receitas_nome" class="justify-self-center text-3xl mt-[30px] text-ellipsis text-nowrap"></p>
+                <p id="nos_mais_receitas_valor" class="justify-self-center text-2xl mt-[30px] text-ellipsis text-nowrap"></p>
+            </div>
+            <div id="soma_valores_nos" class="bg-white rounded-md shadow-md flex-1 p-4"></div>
         </div>
 
         <div class="flex gap-3 p-2 h-143">
